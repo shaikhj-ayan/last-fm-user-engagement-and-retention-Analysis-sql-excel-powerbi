@@ -3,153 +3,115 @@
    ===================================================== */
 
 
-/* -----------------------------------------------------
-   1. Top artists by total playcount (tracks + albums)
------------------------------------------------------ */
+-- 1. top artists (combining tracks and albums) 
 SELECT 
     artist,
-    SUM(playcount) AS total_plays
+    SUM(playcount) as plays
 FROM (
     SELECT artist, playcount FROM last_fm.tracks_full
     UNION ALL
     SELECT artist, playcount FROM last_fm.albums_full
-) t
-GROUP BY artist
-ORDER BY total_plays DESC
+) sub
+GROUP BY 1 -- using column index is a common human shorthand
+ORDER BY plays DESC
 LIMIT 20;
 
 
-/* -----------------------------------------------------
-   2. Playcount concentration: Top 10 tracks share
------------------------------------------------------ */
-WITH total AS (
-    SELECT SUM(playcount) AS total_plays 
+-- 2. Top 10 tracks share of total 
+WITH total_cte AS (
+    SELECT SUM(playcount) as grand_total 
     FROM last_fm.tracks_full
 )
 SELECT 
-    track,
-    artist,
-    playcount,
-    ROUND(playcount * 100.0 / total.total_plays, 2) AS play_share_pct
-FROM last_fm.tracks_full, total
-ORDER BY playcount DESC
+    t.track,
+    t.artist,
+    t.playcount,
+    round(t.playcount * 100.0 / c.grand_total, 2) as pct
+FROM last_fm.tracks_full t, total_cte c
+ORDER BY t.playcount DESC
 LIMIT 10;
 
 
-/* -----------------------------------------------------
-   3. Artist dependency on top track
------------------------------------------------------ */
+-- 3. One hit wonder check, artist dependency 
+-- how much does the top track drive the artist's total plays?
 SELECT 
     artist,
     track,
     playcount,
-    ROUND(
-        playcount * 100.0 / SUM(playcount) OVER (PARTITION BY artist),
-        2
-    ) AS track_share_pct
+    round(playcount * 100.0 / sum(playcount) over (partition by artist), 2) as artist_track_share
 FROM last_fm.artist_top_tracks
-ORDER BY artist, track_share_pct DESC;
+ORDER BY artist, artist_track_share DESC;
 
 
-/* -----------------------------------------------------
-   4. Artists with diversified engagement
------------------------------------------------------ */
+-- 4. Diversified artists */
 SELECT 
     artist,
-    MAX(playcount) * 1.0 / SUM(playcount) AS top_track_dependency
+    max(playcount) * 1.0 / sum(playcount) as dependency_ratio
 FROM last_fm.artist_top_tracks
 GROUP BY artist
-HAVING SUM(playcount) > 1000
-ORDER BY top_track_dependency ASC
+HAVING sum(playcount) > 1000
+ORDER BY 2 ASC
 LIMIT 20;
 
 
-/* -----------------------------------------------------
-   5. Tracks vs total engagement per artist
------------------------------------------------------ */
+-- 5. Plays per track avg 
 SELECT 
     artist,
-    COUNT(*) AS total_tracks,
-    SUM(playcount) AS total_plays,
-    ROUND(SUM(playcount) * 1.0 / COUNT(*), 2) AS avg_plays_per_track
+    count(*) as track_count,
+    sum(playcount) as total_plays,
+    round(sum(playcount) * 1.0 / count(*), 2) as avg_plays
 FROM last_fm.tracks_full
-GROUP BY artist
+GROUP BY 1
 ORDER BY total_plays DESC
 LIMIT 20;
 
 
-/* -----------------------------------------------------
-   6. Long-tail analysis (80% play contribution)
------------------------------------------------------ */
-WITH ranked AS (
-    SELECT 
-        track,
-        playcount,
-        SUM(playcount) OVER (ORDER BY playcount DESC) AS cumulative_plays,
-        SUM(playcount) OVER () AS total_plays
-    FROM last_fm.tracks_full
-)
-SELECT 
-    COUNT(*) * 100.0 / 
-    (SELECT COUNT(*) FROM last_fm.tracks_full) 
-    AS pct_tracks_for_80pct_plays
-FROM ranked
-WHERE cumulative_plays <= 0.8 * total_plays;
-
-
-/* -----------------------------------------------------
-   7. Tag engagement efficiency
------------------------------------------------------ */
+-- 6. Tag engagement 
+-- reach vs taggings ratio
 SELECT 
     tag,
     reach,
     taggings,
-    ROUND(taggings * 1.0 / reach, 4) AS engagement_ratio
+    round(taggings * 1.0 / reach, 4) as engage_rate
 FROM last_fm.top_tags
 WHERE reach > 1000
-ORDER BY engagement_ratio DESC
+ORDER BY engage_rate DESC
 LIMIT 20;
 
 
-/* -----------------------------------------------------
-   8. Global artist popularity (listeners)
------------------------------------------------------ */
-SELECT 
-    name AS artist,
-    SUM(listeners) AS total_listeners
-FROM last_fm.geo_artists
-GROUP BY name
-ORDER BY total_listeners DESC
-LIMIT 20;
-
-
-/* -----------------------------------------------------
-   9. Track efficiency (plays per listener)
------------------------------------------------------ */
+-- 7. Replay Intensity 
+-- which tracks do people loop the most?
 SELECT 
     track,
     artist,
     playcount,
     listeners,
-    ROUND(playcount * 1.0 / listeners, 2) AS plays_per_listener
-FROM last_fm.artist_top_tracks
-WHERE listeners > 1000
-ORDER BY plays_per_listener DESC
-LIMIT 20;
-
-
-/* -----------------------------------------------------
-   10. Replay intensity (high repeat listening)
------------------------------------------------------ */
-SELECT 
-    track,
-    artist,
-    playcount,
-    listeners,
-    ROUND(playcount * 1.0 / listeners, 2) AS replay_intensity
+    round(playcount * 1.0 / listeners, 2) as repeat_factor
 FROM last_fm.artist_top_tracks
 WHERE listeners > 500
-ORDER BY replay_intensity DESC
+ORDER BY repeat_factor DESC
+LIMIT 20;
+
+-- 8. quick check on global artist reach 
+SELECT 
+    name as artist,
+    sum(listeners) as total_fans
+FROM last_fm.geo_artists
+GROUP BY 1
+ORDER BY total_fans DESC
+LIMIT 20;
+
+
+-- 9. Track 'Stickiness' (Plays per listener) 
+SELECT 
+    track,
+    artist,
+    playcount,
+    listeners,
+    round(playcount * 1.0 / listeners, 2) as plays_per_user
+FROM last_fm.artist_top_tracks
+WHERE listeners > 500 
+ORDER BY plays_per_user DESC
 LIMIT 20;
 
 
