@@ -131,7 +131,7 @@ The dashboard highlights key engagement patterns across tracks, artists, and gen
 
 ### 🎵 Top Tracks
 
-![Top Tracks](./images/tracks.png)
+![Top Tracks](https://github.com/shaikhj-ayan/last-fm-user-engagement-and-retention-Analysis-sql-excel-powerbi/blob/master/image/tracks.png)
 
 **Insight:**
 
@@ -143,7 +143,7 @@ The dashboard highlights key engagement patterns across tracks, artists, and gen
 
 ### 🎼 Tracks by Genre
 
-![Tracks by Genre](./images/tracks_by_genre.png)
+![Tracks by Genre](https://github.com/shaikhj-ayan/last-fm-user-engagement-and-retention-Analysis-sql-excel-powerbi/blob/master/image/tracks_by_genre.png)
 
 **Insight:**
 
@@ -157,7 +157,7 @@ The dashboard highlights key engagement patterns across tracks, artists, and gen
 
 ### 🎤 Top Artists by Playcount & Contribution
 
-![Top Artists](./images/top_artist_playcount_contribution.png)
+![Top Artists](https://github.com/shaikhj-ayan/last-fm-user-engagement-and-retention-Analysis-sql-excel-powerbi/blob/master/image/top_artist_playcount_contribution.png)
 
 **Insight:**
 
@@ -171,7 +171,7 @@ The dashboard highlights key engagement patterns across tracks, artists, and gen
 
 ### 📈 Top Track vs Artist Average
 
-![Top Track vs Average](./images/total_track_vs_artist_average.png)
+![Top Track vs Average](https://github.com/shaikhj-ayan/last-fm-user-engagement-and-retention-Analysis-sql-excel-powerbi/blob/master/image/total_track_vs_artist_average.png)
 
 **Insight:**
 
@@ -187,7 +187,7 @@ The dashboard highlights key engagement patterns across tracks, artists, and gen
 
 ### 📊 Track Playcount Distribution
 
-![Distribution](./images/track_playcount_distribution.png)
+![Distribution](https://github.com/shaikhj-ayan/last-fm-user-engagement-and-retention-Analysis-sql-excel-powerbi/blob/master/image/track_playcount_distribution.png)
 
 **Insight:**
 
