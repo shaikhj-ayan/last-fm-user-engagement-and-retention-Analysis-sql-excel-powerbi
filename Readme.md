@@ -1,7 +1,8 @@
-## 🎧 Last.fm User Engagement and Retention Analysis
+# 🎧 Last.fm User Engagement & Retention Analysis
 
-Analyzing user listening behavior, engagement depth, and retention patterns on Last.fm using SQL and Power BI to uncover insights that can improve long-term user retention and platform interaction.
+Analyzing listening behavior, engagement patterns, and content performance on Last.fm using SQL and Power BI to understand how the platform can improve long-term user retention.
 
+---
 
 ## 📌 Table of Contents
 
@@ -12,153 +13,329 @@ Analyzing user listening behavior, engagement depth, and retention patterns on L
 * Tools & Technologies
 * Research Questions
 * Key Findings
-* Dashboard 
+* Dashboard
+* Final Recommendations
 * Author & Contact
 
+---
 
-## Overview
+## 📊 Overview
 
-This project explores how users interact with Last.fm through listening behavior, artist preferences, album engagement, genre trends, and geographic distribution.
+This project analyzes how users interact with Last.fm through:
 
-While Last.fm continues to collect rich listening data through scrobbling, competition from platforms like Spotify, Apple Music, and YouTube Music has changed how users consume and discover music.
+* Listening behavior
+* Artist and track popularity
+* Album engagement
+* Genre trends
+* Global reach
 
-The main objective of this project is to understand:
+While Last.fm still collects rich listening data through scrobbling, modern platforms like Spotify, Apple Music, and YouTube Music provide integrated experiences. Many users generate data passively but do not actively engage with the platform.
+
+The goal of this project is to identify:
 
 * What drives high engagement
-* Where listening concentration exists
-* How user behavior varies across artists, albums, genres, and countries
-* What insights can support stronger retention strategies
+* Where listening is concentrated
+* How content performance varies
+* What can improve user retention
 
+---
 
+## ❗ Business Problem
 
-## Business Problem
+How can Last.fm improve user engagement and long-term retention, especially among new and younger users, in a market dominated by all-in-one music streaming platforms?
 
-**How can Last.fm reverse declining user engagement and improve long-term retention—particularly among new and younger users—in the face of shifting music consumption behaviors and strong competition from integrated streaming platforms?**
+---
 
-
-
-## Context 
+## 📉 Context
 
 ### Engagement Shift
 
-Last.fm originally thrived on:
+Earlier, Last.fm focused on:
 
-* Scrobbling and listening analytics
-* Personalized music recommendations
-* Community-driven interaction
+* Scrobbling (tracking listening)
+* Music discovery
+* Community interaction
 
-However, modern streaming platforms now offer built-in analytics, curated playlists, and seamless in-app experiences. Many users still scrobble music but do not actively revisit the platform. This results in passive data generation rather than meaningful engagement.
+Now:
 
+* Streaming platforms handle discovery + personalization
+* Users don’t need a separate platform
 
+👉 Result: Users still track music but don’t return to engage.
+
+---
 
 ### Retention Imbalance
 
-* New users show lower early retention.
-* Long-term users remain more loyal.
-* Younger audiences are underrepresented.
-* Engagement depth varies significantly across users.
+* New users drop off early
+* Older users stay active
+* Engagement is uneven
+* Younger audience is limited
 
-This suggests that acquisition is not the only problem. Activation and habit formation are key.
+👉 Problem is not just acquiring users, but keeping them engaged.
+
+---
+
+## 📁 Dataset
+
+Data collected using the Last.fm API and structured into:
+
+* `albums_full`
+* `artist_top_tracks`
+* `chart_tags`
+* `geo_artists`
+* `geo_tracks`
+* `top_tags`
+* `tracks_full`
+
+### Data Preparation
+
+* Removed duplicates and inconsistencies
+* Standardized column names
+* Fixed naming issues
+* Structured into relational tables
+* Loaded into SQL and Power BI
+
+---
+
+## 🛠 Tools & Technologies
+
+* SQL (CTE, aggregation, window functions)
+* Power BI (dashboard & visualization)
+* Excel (data cleaning)
+
+---
+
+## ❓ Research Questions
+
+* Which artists generate the most engagement?
+* How concentrated is listening across tracks?
+* Do artists depend on a few top tracks?
+* Does more content lead to more engagement?
+* Which genres drive higher interaction?
+* Which tracks are replayed the most?
+* How strong is listener engagement per track?
+* Which artists have the highest global reach?
+
+---
+
+## 🔍 Key Findings
+
+* A small number of artists drive most of the total playcount
+* Listening is highly concentrated on top tracks
+* Many artists depend heavily on 1–2 hit tracks
+* Only a small % of tracks generate most engagement (long-tail effect)
+* More tracks ≠ more engagement
+* Some tracks show high replay behavior (strong user connection)
+* Engagement is not evenly distributed across the platform
+
+👉 Overall insight:
+**Users are not exploring widely — they stay within a small set of content**
+
+---
+
+Nice, these visuals are actually strong — now you just need to present them properly in your README so it looks like a real data analyst project (not just screenshots).
+
+Here’s a **clean Power BI Dashboard section** you can copy directly into your README and replace the image paths with your uploaded GitHub image links.
+
+---
+
+## 📊 Dashboard (Power BI)
+
+The dashboard highlights key engagement patterns across tracks, artists, and genres. It focuses on identifying **content concentration, replay behavior, and listening distribution**.
+
+---
+
+### 🎵 Top Tracks
+
+![Top Tracks](./images/tracks.png)
+
+**Insight:**
+
+* A few tracks appear repeatedly as top performers
+* Popular songs dominate user listening behavior
+* Indicates **low content exploration**
+
+---
+
+### 🎼 Tracks by Genre
+
+![Tracks by Genre](./images/tracks_by_genre.png)
+
+**Insight:**
+
+* Rock leads with the highest engagement (~0.40M plays)
+* Alternative, electronic, and indie follow closely
+* Pop is slightly lower than expected
+
+👉 Shows that **user taste is concentrated in a few genres**
+
+---
+
+### 🎤 Top Artists by Playcount & Contribution
+
+![Top Artists](./images/top_artist_playcount_contribution.png)
+
+**Insight:**
+
+* Artists like Taylor Swift and Radiohead dominate total plays
+* Contribution % declines gradually across artists
+* A small group drives most platform engagement
+
+👉 Strong **power-law distribution (few artists = most plays)**
+
+---
+
+### 📈 Top Track vs Artist Average
+
+![Top Track vs Average](./images/total_track_vs_artist_average.png)
+
+**Insight:**
+
+* Big gap between top track and average track
+* Example:
+
+  * Radiohead → 57M (top) vs 18M (avg)
+  * Billie Eilish → 53M vs 15M
+
+👉 Many artists rely on **one or two hit tracks**
+
+---
+
+### 📊 Track Playcount Distribution
+
+![Distribution](./images/track_playcount_distribution.png)
+
+**Insight:**
+
+* Most tracks fall in lower playcount range
+* Only a few tracks reach very high playcount
+* Clear **long-tail distribution**
+
+👉 Confirms:
+
+* Majority of content gets low engagement
+* Few tracks dominate listening
+
+---
 
 
+## 🚀 Final Recommendations
 
-## Dataset
+Based on your SQL analysis:
 
-The dataset used in this project was collected using the Last.fm API and structured into the following tables:
+### 1. Reduce Content Concentration
 
-* **albums_full**
-* **artist_top_tracks**
-* **chart_tags**
-* **geo_artist**
-* **geo_tracks**
-* **top_tracks**
-* **tracks_full**
+Problem:
 
-These tables include detailed information about artists, tracks, albums, playcounts, genre tags and overall chart performance.
+* Top tracks dominate engagement
 
-After collection, the raw API data was:
+Solution:
 
-* Cleaned to remove inconsistencies and duplicates
-* Standardized for column names and formats
-* Corrected where misspelled names were identified
-* Structured into relational tables for SQL analysis
-* Prepared for visualization in Power BI
+* Promote lesser-known tracks using recommendations
+* Introduce “Explore More” suggestions
+* Highlight hidden or niche content
 
-This structured dataset enabled deeper engagement analysis across artists, tracks, genres, and geographic segments.
+---
 
+### 2. Improve Music Discovery
 
+Problem:
 
-## Tools & Technologies
+* Users are not exploring new artists
 
-* SQL (aggregation, window functions, cte)
-* Power BI
-* Excel (data cleaning and formatting)
+Solution:
 
+* Personalized discovery feed
+* Weekly discovery playlists
+* Genre-based recommendations
 
+---
 
-## Research Questions
+### 3. Focus on High-Replay Content
 
-The following questions guided the analysis:
+Insight:
 
-1. Which artists have the highest total playcount across all users?
-2. Which tracks are played most frequently per user on average?
-3. How many unique artists does each user listen to?
-4. Which artists generate the highest total playcount across all tracks?
-5. What is the average playcount per track on the platform?
-6. Is there a relationship between the number of tracks an artist has and their total playcount?
-7. Do artists with more tracks tend to generate higher total playcount?
-8. Which albums generate the highest total playcount, and how are they ranked in terms of engagement?
-9. Which genres (tags) have the highest total playcount?
-10. Which countries generate the highest total playcount for artists?
-11. What percentage of total platform playcount comes from the top 10 tracks?
-12. Which artists’ top tracks contribute the most to their total playcount?
+* Some tracks have high replay intensity
 
+Solution:
 
+* Identify these tracks and similar content
+* Build recommendation clusters
+* Use them to increase session time
 
-## Key Findings
+---
 
-* A small group of artists contributes a disproportionately large share of total platform playcount.
-* Listening behavior is highly concentrated around top-performing tracks.
-* A limited percentage of tracks generate a significant portion of total engagement.
-* Some artists rely heavily on a few top tracks, while others maintain more balanced engagement across their catalog.
-* Track volume alone does not guarantee higher engagement. Quality and listener connection matter more than quantity.
+### 4. Support Artists with Balanced Catalogs
 
-Overall, engagement appears concentrated rather than evenly distributed. This has important implications for retention strategy and content personalization.
+Insight:
 
+* Some artists depend on one hit track
 
-## Dashboard (Power BI)
+Solution:
 
-The Power BI dashboard provides a clear overview of listening performance and engagement concentration.
+* Promote their other tracks
+* Create “deep dive” artist sections
+* Encourage full catalog listening
 
-### 🔹 KPI Cards
+---
 
-* **Total Plays**
-* **Top Track**
-* **Average Plays per Track**
+### 5. Improve Tag/Genre Engagement
 
-### 🔹 Key Visualizations
+Insight:
 
-* Track Playcount Distribution
-* Tracks by Genre
-* Album vs Track Plays
-* Top Tracks
-* Top Tracks vs Artist Average
-* Total Plays by Artist
-* Track Share % by Artist
-* Top Artist by Playcount Contribution
+* Some tags have higher engagement ratios
 
-The dashboard focuses on identifying engagement concentration, top-performing artists and tracks, and overall listening patterns across the platform.
+Solution:
 
+* Use tags to improve recommendations
+* Build genre-based user journeys
 
-## Conclusion
+---
 
-This project demonstrates how structured listening data can uncover meaningful engagement patterns.
+### 6. Strengthen Platform Value (Key Fix)
 
-The analysis shows that while music activity remains strong, engagement is concentrated among a limited set of artists and tracks. Improving retention will require strengthening personalization, increasing interaction depth, and encouraging broader exploration within the platform.
+Big Problem:
 
+* Last.fm is passive (only tracking)
 
+Solution:
 
-## Author & Contact
+* Add interactive features:
 
-Shaikh Ayan
+  * Listening insights (weekly stats like Spotify Wrapped)
+  * Social sharing
+  * User comparisons
+  * Gamification (streaks, badges)
+
+---
+
+### 7. Increase Retention Through Habit Formation
+
+Problem:
+
+* Users don’t revisit platform
+
+Solution:
+
+* Daily/weekly summaries
+* Notifications (listening milestones)
+* Personalized reports
+
+---
+
+## 🧠 Final Insight
+
+Last.fm does not have a data problem it has an **engagement problem**.
+
+Users generate data, but the platform does not convert it into meaningful interaction.
+
+👉 Fix:
+Turn passive data into **active experience**
+
+---
+
+## 👤 Author & Contact
+
+**Shaikh Ayan**
 📧 Email: [shaikhayan1.in@gmail.com](mailto:shaikhayan1.in@gmail.com)
