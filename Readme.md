@@ -120,11 +120,6 @@ Data collected using the Last.fm API and structured into:
 👉 Overall insight:
 **Users are not exploring widely — they stay within a small set of content**
 
----
-
-Nice, these visuals are actually strong — now you just need to present them properly in your README so it looks like a real data analyst project (not just screenshots).
-
-Here’s a **clean Power BI Dashboard section** you can copy directly into your README and replace the image paths with your uploaded GitHub image links.
 
 ---
 
